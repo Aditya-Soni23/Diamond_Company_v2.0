@@ -77,3 +77,32 @@ oldCards.forEach(card => {
     </div>
   `;
 });
+
+
+
+console.log("Script loaded");
+
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.getElementById("productSearch");
+  const grid = document.querySelector(".products-grid");
+
+  console.log("Input:", searchInput);
+  console.log("Grid:", grid);
+
+  searchInput.addEventListener("input", () => {
+    const value = searchInput.value.toLowerCase();
+    const cards = grid.children;
+
+    console.log("Searching for:", value);
+
+    Array.from(cards).forEach(card => {
+      const text = card.textContent.toLowerCase();
+      const match = text.includes(value);
+
+      console.log(text, "=>", match);
+
+      card.style.display = match ? "flex" : "none";
+    });
+  });
+});
+
