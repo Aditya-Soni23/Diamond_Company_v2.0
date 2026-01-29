@@ -2,7 +2,7 @@
     "name": "Diamond Company V2",
     "short_name": "DC V2",
     "description": "A portfolio showcasing all products crafted by Diamond Company.",
-    "start_url": "/",
+    "start_url": "https://aditya-soni23.github.io/Diamond_Company_v2.0/",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#000000",
