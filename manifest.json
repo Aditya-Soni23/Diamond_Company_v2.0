@@ -1,0 +1,17 @@
+{
+    "name": "Diamond Company V2",
+    "short_name": "DC V2",
+    "description": "A portfolio showcasing all products crafted by Diamond Company.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#000000",
+    "icons": [
+      {
+        "src": "Diamond_Comapny_Logo.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any maskable"
+      }
+    ]
+  }
