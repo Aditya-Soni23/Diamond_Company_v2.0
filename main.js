@@ -9,7 +9,7 @@ void overlay.offsetWidth; // force reflow
 overlay.classList.add('active');
 
 setTimeout(() => {
-  window.open('https://diamondcompany.netlify.app/', '_blank');
+  window.open('https://aditya-soni23.github.io/Diamond_Company_Dark_Edition/', '_blank');
   overlay.classList.remove('active');
 }, 1800);
 });
