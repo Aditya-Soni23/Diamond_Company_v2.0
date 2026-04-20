@@ -1,395 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diamond Company</title>
-    <link rel="icon" type="image/png" href="Diamond_Comapny_Logo.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', -apple-system, sans-serif; }
-        :root { scroll-behavior: smooth;--bg-main: #f0e8db; --text-dark: #2d241e; --iphone-white-brown: #e9e0d2; --accent-glow: rgba(124, 77, 255, 0.5); }
-        body { background: var(--bg-main); color: var(--text-dark); overflow-x: hidden; }
-        /* ===== NAVBAR ===== */
-        nav { position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 80px; background: rgba(240, 232, 219, 0.7); backdrop-filter: blur(20px); z-index: 1000; animation: fadeInDown 1.2s cubic-bezier(0.22, 1, 0.36, 1); }
-        .nav-logo { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; cursor: pointer; transition: 0.4s; }
-        .nav-logo:hover { transform: scale(1.1); color: #7c4dff; }
-        .nav-links { display: flex; gap: 40px; align-items: center; }
-        .nav-links a { text-decoration: none; color: var(--text-dark); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s; }
-
-        /* DROPDOWN FIX (2) */
-        .dropdown { position: relative; padding: 10px 0; }
-        .dropdown::after { content: ''; position: absolute; bottom: -15px; left: 0; width: 100%; height: 25px; }
-        
-        .dropdown-menu { position: absolute; top: 45px; left: 50%; transform: translateX(-50%) translateY(15px); background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); padding: 12px; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); display: none; flex-direction: column; min-width: 200px; opacity: 0; transition: 0.4s; border: 1px solid rgba(255,255,255,0.5); }
-        .dropdown:hover .dropdown-menu { display: flex; opacity: 1; transform: translateX(-50%) translateY(0); }
-        .dropdown-menu a { padding: 12px 16px; border-radius: 10px; text-transform: none; letter-spacing: 0; font-size: 15px; }
-        .dropdown-menu a:hover { background: #7c4dff; color: #fff; transform: translateX(5px); }
-
-        /* HAMBURGER (1) */
-        .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; z-index: 1100; }
-        .hamburger span { width: 28px; height: 2px; background: var(--text-dark); transition: 0.4s; }
-
-        /* ===== HERO SECTION ===== */
-        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; background: linear-gradient(to bottom, #fdfbf7 0%, #f0e8db 100%); overflow: hidden; }
-        .hero-container { display: flex; align-items: center; gap: 25px; z-index: 20; animation: zoomIn 1.5s; padding: 20px; }
-        
-        .hero h1 { 
-            font-size: clamp(40px, 8vw, 85px); 
-            font-weight: 800; 
-            letter-spacing: -4px; 
-            line-height: 1.2; 
-            padding-right: 10px; 
-            background: linear-gradient(120deg, #2d241e 30%, #7c4dff 50%, #2d241e 70%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shineText 5s linear infinite;
-        }
-        @keyframes shineText { to { background-position: -200% center; } }
-
-        .hero-logo { width: 110px; height: 110px; object-fit: contain; animation: shineGlow 4s infinite alternate ease-in-out; filter: drop-shadow(0 0 15px rgba(124,77,255,0.3)); }
-        @keyframes shineGlow { 
-            0% { filter: drop-shadow(0 0 10px rgba(124,77,255,0.3)); transform: translateY(0) rotate(0deg); }
-            50% { filter: drop-shadow(0 0 40px rgba(124,77,255,0.8)); }
-            100% { filter: drop-shadow(0 0 20px rgba(124,77,255,0.5)); transform: translateY(-10px) rotate(5deg); }
-        }
-
-        .hero-sub { position: absolute; top: 65%; font-size: 18px; letter-spacing: 8px; text-transform: uppercase; font-weight: 300; opacity: 0.6; z-index: 20; }
-
-        /* iPHONE WAVE */
-        .iphone-wave-container { position: absolute; top: 10%; width: 160%; height: 70%; left: -30%; z-index: 5; display: flex; justify-content: center; }
-        .iphone-wave { width: 100%; height: 100%; border-radius: 0 0 80% 80%; box-shadow: 0 15px 100px rgba(0,0,0,0.05); animation: waveDrop 2s cubic-bezier(0.19, 1, 0.22, 1); position: relative; }
-        
-        @keyframes waveDrop { 
-            0% { transform: translateY(-400px) scale(1.1); opacity: 0; } 
-            100% { transform: translateY(0) scale(1); opacity: 1; } 
-        }
-
-        /* MOBILE FIXES (1 & 2) */
-        @media(max-width: 768px) {
-            nav { padding: 20px 30px; }
-            .hamburger { display: flex; order: 2; } /* Keeps it to the right */
-            .nav-logo { order: 1; }
-            
-            .nav-links { 
-                position: fixed; top: 0; left: 0; width: 100%; height: 100vh; 
-                background: var(--bg-main); flex-direction: column; 
-                justify-content: center; align-items: center;
-                transform: translateY(-100%); transition: 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-                opacity: 0; pointer-events: none;
-            }
-            .nav-links.active { transform: translateY(0); opacity: 1; pointer-events: all; }
-            
-            /* Center elements on mobile */
-            .hero-container { flex-direction: column; text-align: center; gap: 20px; } /* Text first, Logo second */
-            .hero h1 { font-size: 48px; letter-spacing: -2px; padding-right: 0; }
-            .hero-logo { width: 90px; order: 2; } /* Forces logo below text */
-            .hero-sub { top: 75%; font-size: 12px; letter-spacing: 4px; width: 100%; text-align: center; }
-            
-            .dropdown-menu { position: static; transform: none; opacity: 1; display: flex; background: transparent; box-shadow: none; border: none; align-items: center; }
-        }
-        /* ===== PRODUCTS SECTION ===== */
-.products-section {
-    padding: 100px 80px;
-    background: #fdfbf7;
-    min-height: 100vh;
-}
-
-.section-header {
-    text-align: center;
-    margin-bottom: 60px;
-}
-
-.search-container {
-    max-width: 600px;
-    margin: 0 auto 50px;
-    position: relative;
-}
-
-#productSearch {
-    width: 100%;
-    padding: 18px 30px;
-    border-radius: 50px;
-    border: 1px solid rgba(0,0,0,0.1);
-    background: #fff;
-    font-size: 16px;
-    outline: none;
-    transition: 0.3s;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-}
-
-#productSearch:focus {
-    border-color: #7c4dff;
-    box-shadow: 0 10px 30px rgba(124, 77, 255, 0.15);
-}
-
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-/* CARD STYLING */
-.card {
-    background: #fff;
-    border-radius: 24px;
-    padding: 20px;
-    transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid rgba(0,0,0,0.03);
-    display: flex;
-    flex-direction: column;
-}
-
-.card:hover {
-    transform: translateY(-15px);
-    box-shadow: 0 30px 60px rgba(0,0,0,0.08);
-}
-
-.card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 18px;
-    margin-bottom: 20px;
-}
-
-.card h3 {
-    font-size: 22px;
-    margin-bottom: 10px;
-    color: var(--text-dark);
-}
-
-.card p {
-    font-size: 15px;
-    color: #666;
-    line-height: 1.6;
-    margin-bottom: 25px;
-    flex-grow: 1;
-}
-
-.btn-card {
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-    background: var(--text-dark);
-    color: #fff;
-    padding: 12px;
-    border-radius: 12px;
-    font-weight: 600;
-    transition: 0.3s;
-}
-
-.btn-card:hover {
-    background: #7c4dff;
-    box-shadow: 0 10px 20px rgba(124, 77, 255, 0.3);
-}
-
-@media(max-width: 768px) {
-    .products-section { padding: 60px 20px; }
-}
-/* ===== FOUNDER SECTION ===== */
-#founder {
-    padding: 100px 80px;
-    background: #f0e8db;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.section-title {
-    font-size: clamp(32px, 5vw, 48px);
-    font-weight: 800;
-    letter-spacing: -2px;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.section-desc {
-    max-width: 700px;
-    text-align: center;
-    opacity: 0.7;
-    line-height: 1.6;
-    margin-bottom: 60px;
-}
-
-.founder-card {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-    border-radius: 40px;
-    padding: 60px;
-    max-width: 1100px;
-    width: 100%;
-    box-shadow: 0 40px 100px rgba(0,0,0,0.05);
-}
-
-.founder-img {
-    width: 200px;
-    height: 200px;
-    border-radius: 30px;
-    object-fit: cover;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    border: 4px solid #fff;
-}
-
-.founder-info h3 {
-    font-size: 36px;
-    letter-spacing: -1.5px;
-    margin-bottom: 5px;
-}
-
-.founder-role {
-    color: #7c4dff;
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 13px;
-    letter-spacing: 2px;
-    margin-bottom: 15px;
-}
-
-.founder-desc {
-    font-size: 18px;
-    line-height: 1.6;
-    margin-bottom: 40px;
-    max-width: 600px;
-    opacity: 0.8;
-}
-
-/* SOCIAL GRID */
-.founder-links-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 15px;
-}
-
-.social-row {
-    text-decoration: none;
-    color: var(--text-dark);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: rgba(255, 255, 255, 0.6);
-    padding: 12px 20px;
-    border-radius: 16px;
-    transition: 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-    border: 1px solid transparent;
-}
-
-.social-row:hover {
-    background: #fff;
-    transform: translateY(-5px);
-    border-color: #7c4dff;
-    box-shadow: 0 10px 30px rgba(124, 77, 255, 0.15);
-}
-
-.social-logo img {
-    width: 20px;
-    height: 20px;
-    filter: grayscale(1);
-    transition: 0.3s;
-}
-
-.social-row:hover .social-logo img {
-    filter: grayscale(0);
-}
-
-.social-id {
-    font-size: 14px;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/* MOBILE FIX */
-@media(max-width: 768px) {
-    #founder { padding: 80px 20px; }
-    .founder-card { flex-direction: column; padding: 40px 25px; text-align: center; }
-    .founder-img { width: 150px; height: 150px; margin-bottom: 20px; }
-    .founder-links-grid { grid-template-columns: 1fr; }
-    .social-row { justify-content: center; }
-}
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DIAMOND — The Empire</title>
+  <link rel="icon" href="Diamond_Comapny_Logo.png" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
 </head>
-
 <body>
 
-<nav>
-    <div class="nav-logo animate__animated animate__fadeInLeft">DIAMOND</div>
-
-    <div class="hamburger" onclick="toggleMenu()">
-        <span></span><span></span><span></span>
-    </div>
-
-    <div class="nav-links">
-        <a href="#products" onclick="toggleMenu()">Products</a>
-        <div class="dropdown">
-            <a href="#">Versions ▾</a>
-            <div class="dropdown-menu">
-              <a href="whitetheme.html" target="_blank">Version 2.0</a>
-              <a href="https://aditya-soni23.github.io/Diamond_Company_Dark_Edition/" target="_blank">Dark Edition</a>
-              <a href="timeline.html" target="_blank">Timeline</a>
-              <a href="https://aditya-soni23.github.io/Diamond_Company/" target="_blank">Version 1.0</a>
-          </div>
-        </div>
-        <a href="Diamond_Company.apk" download="Diamond_Company.apk">App</a>
-        <a href="#founder" onclick="toggleMenu()">Contact</a>
-    </div>
-</nav>
-
-<section class="hero">
-    <div class="hero-container">
-        <h1 class="animate__animated animate__fadeInLeft">Diamond Company</h1>
-        <img src="Diamond_Comapny_Logo.png" class="hero-logo animate__animated animate__fadeInUp" alt="Logo">
+<header>
+  <div class="nav">
+    <div class="logo brand">
+      <img src="Diamond_Comapny_Logo.png" alt="Diamond Company Logo">
+      <span>DIAMOND</span>
     </div>
     
-    <p class="hero-sub animate__animated animate__fadeInUp" style="animation-delay: 1s">• Online Products •</p>
+    <div>
+      <a href="#empire">Empire</a>
+      <a href="#products">Products</a>
+      <a href="timeline.html">Timeline</a>
+      <a href="#founder">Founder</a>
+      <a href="#vision">Vision</a>
+      <a href="#founder">Contact</a>
+      <a href="#" class="cta teleport-btn">#DARK EDITION</a>
 
-    <div class="iphone-wave-container">
-      <svg viewBox="0 0 1440 600" class="iphone-wave" preserveAspectRatio="none">
-        <defs>
-          <radialGradient id="waveGradient" cx="50%" cy="100%" r="80%">
-            <stop offset="0%" stop-color="#ffffff"/>
-            <stop offset="25%" stop-color="#f8f2e8"/>
-            <stop offset="55%" stop-color="#e9dcc8"/>
-            <stop offset="100%" stop-color="#d6c3a3"/>
-          </radialGradient>
-          <radialGradient id="edgeGlow" cx="50%" cy="100%" r="60%">
-            <stop offset="0%" stop-color="rgba(255,255,255,0.9)"/>
-            <stop offset="30%" stop-color="rgba(255,255,255,0.5)"/>
-            <stop offset="70%" stop-color="rgba(255,255,255,0.15)"/>
-            <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
-          </radialGradient>
-        </defs>
-        <path d="M0,0 L0,360 Q720,900 1440,360 L1440,0 Z" fill="url(#waveGradient)" />
-        <path d="M0,360 Q720,900 1440,360" fill="none" stroke="url(#edgeGlow)" stroke-width="6" opacity="0.9" />
-      </svg>
+      <a href="Diamond_Company.apk" class="cta" download style="padding:8px 18px;font-size:12px;">
+        App
+      </a>
+      
+  </div>
+</header>
+
+<div class="hero">
+  <!-- Floating leaves background -->
+  <div class="hero-bg"></div>
+
+  <div class="hero-content">
+    <div class="hero-title"> 
+      <h1>The Diamond Empire</h1>
+      <img src="Diamond_Comapny_Logo.png" class="hero-logo" alt="Diamond Logo">
     </div>
+
+    <p>
+      The core company. The origin. A premium digital empire powering multiple brands, products, and innovation streams under one unbreakable identity.
+    </p>
+
+    <a class="cta" href="#products">Explore the Empire</a>
+  </div>
+</div>
+
+
+
+
+<section id="empire" class="empire-section">
+  <h2 class="section-title">One Core. Many Powers.</h2>
+  <p class="section-desc">
+    Diamond Company stands at the center. Every product, every sub-brand,
+    every innovation traces back to this core — designed to dominate its space.
+  </p>
+
+  <div class="empire-grid">
+    <div class="empire-card">
+      <span class="empire-tag">DIGITAL</span>
+      <h3>Diamond Digital</h3>
+      <p>Technology, apps, platforms, and future software products.</p>
+    </div>
+
+    <div class="empire-card">
+      <span class="empire-tag">COMMERCE</span>
+      <h3>Diamond Commerce</h3>
+      <p>Direct-to-consumer products, premium tools, and utilities.</p>
+    </div>
+
+    <div class="empire-card">
+      <span class="empire-tag">LABS</span>
+      <h3>Diamond Labs</h3>
+      <p>Experimental ideas, R&D, and future market disruptors.</p>
+    </div>
+  </div>
 </section>
-<section id="products" class="products-section">
-  <div class="section-header">
-      <h2 style="font-size: 32px; letter-spacing: -1px; margin-bottom: 10px;">Our Products (85+)</h2>
-      <p style="opacity: 0.6;">Premium digital tools for the modern era</p>
-  </div>
 
-  <div class="search-container">
-      <input type="text" id="productSearch" placeholder="Search products..........." onkeyup="filterProducts()">
-  </div>
+<section id="products">
+  <h2 class="section-title">74 Products. One Gateway.</h2>
+  <p class="section-desc">Browse all Diamond products. Each product redirects to its dedicated page or external platform.</p>
+  <input 
+  type="text" 
+  id="productSearch" 
+  placeholder="Search products..." 
+  class="product-search"
+/>
 
-
-
-
-
-
-
-  <div class="product-grid" id="productGrid">
-
-
-
-
+  <div class="products-grid">
 
     <div class="card">
       <img src="https://yorcmo.com/wp-content/uploads/2021/09/Fundamentals_of_Marketing_header.jpg">
@@ -1035,106 +739,110 @@
 
     
 
-
-
   </div>
 </section>
+
 
 
 <section id="founder">
-  <h2 class="section-title animate__animated animate__fadeInUp">The Mind Behind Diamond</h2>
-  <p class="section-desc animate__animated animate__fadeInUp">Every empire has a human core. Diamond is driven by vision, discipline, and obsession with building things that last.</p>
+  <h2 class="section-title">The Mind Behind Diamond</h2>
+  <p class="section-desc">Every empire has a human core. Diamond is driven by vision, discipline, and obsession with building things that last.</p>
 
-  <div class="founder-card animate__animated animate__fadeInUp">
-      <img src="My_Photo.png" alt="Founder" class="founder-img">
-      <img src="Diamond_Comapny_Logo.png" alt="Founder" style="width: 300px; height: 210px; margin-left: 400px;">
-      
-      <div class="founder-info">
-          <p class="founder-role">Founder & Architect</p>
-          <h3>Aditya Soni</h3>
-          <p class="founder-desc">
-              Coder, creator, and builder focused on long-term dominance, clean systems, and meaningful products.
-          </p>
-
-          <div class="founder-links-grid">
-              <a href="https://youtube.com/@aditya_soni_23" target="_blank" class="social-row">
-                  <div class="social-logo"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube"></div>
-                  <div class="social-id">Aditya Soni</div>
-              </a>
-
-              <a href="https://discord.com/users/DIAMOND_GAMING#7562" target="_blank" class="social-row">
-                  <div class="social-logo"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg" alt="Discord"></div>
-                  <div class="social-id">DIAMOND_GAMING</div>
-              </a>
-
-              <a href="https://instagram.com/aditya.soni237" target="_blank" class="social-row">
-                  <div class="social-logo"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram"></div>
-                  <div class="social-id">aditya.soni237</div>
-              </a>
-
-              <a href="https://github.com/Aditya-Soni23" target="_blank" class="social-row">
-                  <div class="social-logo"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub"></div>
-                  <div class="social-id">Aditya-Soni23</div>
-              </a>
-
-              <a href="https://wa.me/9154995314" target="_blank" class="social-row">
-                  <div class="social-logo"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp"></div>
-                  <div class="social-id">+91 91549 95314</div>
-              </a>
-
-              <a href="mailto:adityasonihyderabad@gmail.com" class="social-row">
-                  <div class="social-logo"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg" alt="Gmail"></div>
-                  <div class="social-id">adityasoni...</div>
-              </a>
-              
-              <div class="social-row">
-                  <div class="social-logo"><img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/valorant.svg" alt="Valorant"></div>
-                  <div class="social-id">DiamondGaming23#91123</div>
-              </div>
+  <div class="founder-card" style="display:flex;gap:24px;align-items:center;">
+    <img src="My_Photo.png" alt="Founder" class="founder-img">
+    <div class="founder-info">
+      <h3>Aditya Soni</h3>
+      <p class="founder-role">Founder & Architect of Diamond Company</p>
+      <p class="founder-desc">
+        Coder, creator, and builder focused on long-term dominance, clean systems, and meaningful products.
+      </p>
+      <div class="founder-links-grid">
+        <a href="https://youtube.com/@aditya_soni_23?si=k2OvbRvOGI1G-9xL" target="_blank" class="social-row">
+          <div class="social-logo">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/youtube.svg" alt="YouTube Logo">
           </div>
-      </div>
-  </div>
-</section>
-<script>
-    function toggleMenu() {
-        document.querySelector('.nav-links').classList.toggle('active');
-        // Simple hamburger animation
-        const spans = document.querySelectorAll('.hamburger span');
-        const isActive = document.querySelector('.nav-links').classList.contains('active');
-        spans[0].style.transform = isActive ? 'rotate(45deg) translate(5px, 6px)' : '';
-        spans[1].style.opacity = isActive ? '0' : '1';
-        spans[2].style.transform = isActive ? 'rotate(-45deg) translate(5px, -6px)' : '';
-    }
+          <div class="social-id">Aditya Soni</div>
+        </a>
+      
+        <a href="https://discord.com/users/DIAMOND_GAMING#7562" target="_blank" class="social-row">
+          <div class="social-logo">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg" alt="Discord Logo">
+          </div>
+          <div class="social-id">DIAMOND_GAMING#7562</div>
+        </a>
+      
+        <a href="https://www.roblox.com/users/1742775774/profile" target="_blank" class="social-row">
+          <div class="social-logo">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/roblox.svg" alt="Roblox Logo">
+          </div>
+          <div class="social-id">diamondsoni1</div>
+        </a>
+      
+        <a class="social-row">
+          <div class="social-logo">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/valorant.svg" alt="Valorant Logo">
+          </div>
+          <div class="social-id">DiamondGaming23#91123</div>
+        </a>
+      
+        <a href="mailto:adityasonihyderabad@gmail.com" class="social-row">
+          <div class="social-logo">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/gmail.svg" alt="Email Logo">
+          </div>
+          <div class="social-id">adityasonihyderabad@gmail.com</div>
+        </a>
 
-    document.addEventListener('mousemove', (e) => {
-        if(window.innerWidth > 768) {
-            const logo = document.querySelector('.hero-logo');
-            const wave = document.querySelector('.iphone-wave');
-            let moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-            let moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-            logo.style.transform = `translate(${moveX * 2}px, ${moveY * 2}px) rotate(${moveX}deg)`;
-            wave.style.transform = `translate(${-moveX}px, ${-moveY * 0.5}px)`;
-        }
-    });
-
-    function filterProducts() {
-    const input = document.getElementById('productSearch').value.toLowerCase();
-    const grid = document.getElementById('productGrid');
-    const cards = grid.getElementsByClassName('card');
-
-    for (let i = 0; i < cards.length; i++) {
-        const title = cards[i].querySelector('h3').innerText.toLowerCase();
-        const desc = cards[i].querySelector('p').innerText.toLowerCase();
+        <a href="https://instagram.com/aditya.soni237" target="_blank" class="social-row">
+          <div class="social-logo">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/instagram.svg" alt="Instagram Logo">
+          </div>
+          <div class="social-id">aditya.soni237</div>
+        </a>
         
-        if (title.includes(input) || desc.includes(input)) {
-            cards[i].style.display = "";
-            cards[i].classList.add('animate__animated', 'animate__fadeIn');
-        } else {
-            cards[i].style.display = "none";
-        }
-    }
-}
-</script>
+        
+        <!-- GitHub -->
+        <a href="https://github.com/Aditya-Soni23" target="_blank" class="social-row">
+          <div class="social-logo">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/github.svg" alt="GitHub Logo">
+          </div>
+          <div class="social-id">Aditya-Soni23</div>
+        </a>
+        
+        <!-- WhatsApp -->
+        <a href="https://wa.me/9154995314" target="_blank" class="social-row">
+          <div class="social-logo">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp Logo">
+          </div>
+          <div class="social-id">+91-9154995314</div>
+        </a>
+      </div>
+      
+    </div>
+  </div>
+  
+</section>
 
+<section id="vision">
+  <h2 class="section-title">Built for Monopoly</h2>
+  <p class="section-desc">Diamond isn’t chasing trends. It’s engineered to replace them. This is a long‑term empire designed for dominance, trust, and scale.</p>
+</section>
+
+<footer id="contact">
+  © 2019 Diamond Company. All rights reserved. Built as an empire.
+</footer>
+
+<div id="teleport-overlay">
+  <div class="space"></div>
+
+  <img 
+    src="Diamond_Comapny_Logo.png" 
+    alt="Diamond Company Logo" 
+    class="teleport-logo"
+  />
+
+  <div class="blackhole"></div>
+</div>
+<button id="backToTop" title="Go to top">↑</button>
+<script src="main.js"></script>
 </body>
 </html>
